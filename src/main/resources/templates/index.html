@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -12,6 +13,16 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
+<div>
+  <div sec:authorize="isAuthenticated()">
+    Welcome <span sec:authentication="name">Username</span>
+    &nbsp;
+    <span sec:authentication="principal.authorities">Roles</span>
+    <form th:action="@{/Logout}" method="post">
+      <input type="submit" value="Logout"/>
+    </form>
+  </div>
+</div>
 
 <div class="container">
 <!--  <ul class="link-category">-->
@@ -39,7 +50,7 @@
       <th></th>
       <th>Cover</th>
       <th>Content</th>
-      <th>Action</th>
+      <th sec:authorize="hasAnyAuthority('ADMIN', 'EDITOR')">Action</th>
     </tr>
     </thead>
     <tbody>
@@ -57,9 +68,10 @@
         <td>
           <span th:text="${blog.getContent()}"></span>
         </td>
-        <td>
+        <td sec:authorize="hasAnyAuthority('ADMIN','EDITOR')">
           <a th:href="@{/{id}/edit(id=${blog.id})}" >Edit</a>
-          <a type="button" data-toggle="modal" th:data-id="${blog.id}" data-target="#delete-modal" >Delete</a>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <a sec:authorize="hasAuthority('ADMIN')" type="button" data-toggle="modal" th:data-id="${blog.id}" data-target="#delete-modal" >Delete</a>
         </td>
       </tr>
     </div>

@@ -166,4 +166,14 @@ public class BlogController {
         model.addAttribute("authorPage", resultPage);
         return "/searchpaginated";
     }
+
+    @GetMapping("/403")
+    public String error403(){
+        return "403";
+    }
+
+    @GetMapping("/login")
+    public String loginPage(){
+        return "login";
+    }
 }
