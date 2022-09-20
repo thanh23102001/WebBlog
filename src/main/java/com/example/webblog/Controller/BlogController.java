@@ -176,4 +176,9 @@ public class BlogController {
     public String loginPage(){
         return "login";
     }
+
+    @PostMapping("/login_success_handler")
+    public String loginSuccessHandler(){
+        return "index";
+    }
 }
